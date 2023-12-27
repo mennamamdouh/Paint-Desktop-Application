@@ -92,6 +92,17 @@ public class PaintApplet extends Applet{
 		});
 		add(pencilButton);
 		
+		// Our event source for the eraser button
+		Button eraserButton = new Button("Eraser");
+		
+		// Register the pencilButton listener to the pencilButton source
+		eraserButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 5;
+			}
+		});
+		add(eraserButton);
+		
 		
 		/*  Options of Colors --> Red - Green - Blue  */
 		
@@ -196,6 +207,10 @@ public class PaintApplet extends Applet{
 						currentShape = new Line();
 					break;
 					
+					case 5:
+						currentShape = new Line();
+					break;
+					
 					default:
 						currentShape = null;
 					break;
@@ -220,7 +235,6 @@ public class PaintApplet extends Applet{
 					// Get the first point
 					x1 = e.getX();
 					y1 = e.getY();
-					currentShape.setFirstPoint(x1, y1);
 				}
 			}
 			public void mouseReleased(MouseEvent e){
@@ -245,17 +259,54 @@ public class PaintApplet extends Applet{
 					// Check the Pencil and Eraser cases
 					switch(currentlyDrawing){
 						case 4:
-							x2 = e.getX();
-							y2 = e.getY();
+							
+							// Create new line objects while dragging
 							currentShape = new Line();
 							currentShape.setColor(shapeColor);
+							
+							// First coordinate
 							currentShape.setFirstPoint(x1, y1);
+							
+							// Get the end point
+							x2 = e.getX();
+							y2 = e.getY();
 							currentShape.setEndPoint(x2, y2);
+							
+							// Then add each line object
+							shapes.add(indexOfShapes, currentShape);
+							indexOfShapes++;
+							
+							// Update the next first point from we ended
+							x1 = x2;
+							y1 = y2;
+						break;
+						
+						case 5:
+							// Create new line objects while dragging
+							currentShape = new Line();
+							currentShape.setColor(Color.WHITE);
+							
+							// First coordinate
+							currentShape.setFirstPoint(x1, y1);
+							
+							// Get the end point
+							x2 = e.getX();
+							y2 = e.getY();
+							currentShape.setEndPoint(x2, y2);
+							
+							// Then add each line object
+							shapes.add(indexOfShapes, currentShape);
+							indexOfShapes++;
+							
+							// Update the next first point from we ended
 							x1 = x2;
 							y1 = y2;
 						break;
 						
 						default:
+							// First coordinate
+							currentShape.setFirstPoint(x1, y1);
+							
 							// Get the end point then add the shape in the array list
 							x2 = e.getX();
 							y2 = e.getY();
@@ -265,8 +316,6 @@ public class PaintApplet extends Applet{
 					
 					// Repaint and add to the array list
 					repaint();
-					shapes.add(indexOfShapes, currentShape);
-					indexOfShapes++;
 				}
 			}
 		});
@@ -294,16 +343,16 @@ public class PaintApplet extends Applet{
 				
 				case 2:
 					if(currentSolidState){
-						graphicsObj.fillRect(x1, y1, x2 - x1, y2 - y1);
+						graphicsObj.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 					}
-					graphicsObj.drawRect(x1, y1, x2 - x1, y2 - y1);
+					graphicsObj.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 				break;
 				
 				case 3:
 					if(currentSolidState){
-						graphicsObj.fillOval(x1, y1, x2 - x1, y2 - y1);
+						graphicsObj.fillOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 					}
-					graphicsObj.drawOval(x1, y1, x2 - x1, y2 - y1);
+					graphicsObj.drawOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 				break;
 			}
 		}
@@ -348,7 +397,7 @@ class Line extends Shape{
 	// To set the end points at releasing the mouse
 	@Override
 	void setEndPoint(int x2, int y2){
-		this.x2 =x2;
+		this.x2 = x2;
 		this.y2 = y2;
 	}
 	
@@ -376,8 +425,8 @@ class Rectangle extends Shape{
 	// To set the end points at releasing the mouse
 	@Override
 	void setEndPoint(int x2, int y2){
-		this.x2 = x2 - x1;
-		this.y2 = y2 - y1;
+		this.x2 = x2;
+		this.y2 = y2;
 	}
 	
 	// The draw method of the Line
@@ -385,9 +434,9 @@ class Rectangle extends Shape{
 	void draw(Graphics graphicsObj){
 		graphicsObj.setColor(shapeColor);
 		if(this.isSolid){
-			graphicsObj.fillRect(x1, y1, x2, y2);
+			graphicsObj.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 		}
-		graphicsObj.drawRect(x1, y1, x2, y2);
+		graphicsObj.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 	}
 }
 
@@ -407,8 +456,8 @@ class Oval extends Shape{
 	// To set the end points at releasing the mouse
 	@Override
 	void setEndPoint(int x2, int y2){
-		this.x2 = x2 - x1;
-		this.y2 = y2 - y1;
+		this.x2 = x2;
+		this.y2 = y2;
 	}
 	
 	// The draw method of the Line
@@ -416,8 +465,8 @@ class Oval extends Shape{
 	void draw(Graphics graphicsObj){
 		graphicsObj.setColor(shapeColor);
 		if(this.isSolid){
-			graphicsObj.fillOval(x1, y1, x2, y2);
+			graphicsObj.fillOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 		}
-		graphicsObj.drawOval(x1, y1, x2, y2);
+		graphicsObj.drawOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 	}
 }
