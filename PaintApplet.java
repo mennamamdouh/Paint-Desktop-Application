@@ -17,6 +17,7 @@ public class PaintApplet extends Applet{
 	
 	// Colors numbering rules
 	public static final int RED = 1;
+	public static final int GREEN = 2;
 	
 	// Define the variables which hold the current states
 	int currentlyDrawing = 0;	// The shape number from the shapes numbering rules
@@ -84,6 +85,19 @@ public class PaintApplet extends Applet{
 		});
 		add(redButton);
 		
+		// Our event source for the green button
+		Button greenButton = new Button("Green");
+		
+		// Register the greenButton listener to the greenButton source
+		greenButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 2;
+			}
+		});
+		add(greenButton);
+		
+		
+		
 		/*  Mouse events and listeners  */
 		
 		// Register the mouse listener
@@ -107,6 +121,10 @@ public class PaintApplet extends Applet{
 					switch(currentColor){
 						case 1:
 							shapeColor = Color.RED;
+						break;
+						
+						case 2:
+							shapeColor = Color.GREEN;
 						break;
 					}
 					currentShape.setColor(shapeColor);
