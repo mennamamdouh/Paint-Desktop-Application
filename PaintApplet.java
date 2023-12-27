@@ -19,6 +19,7 @@ public class PaintApplet extends Applet{
 	public static final int RECTANGLE = 2;
 	public static final int OVAL = 3;
 	public static final int PENCIL = 4;
+	public static final int ERASER = 5;
 	
 	// Colors numbering rules
 	public static final int RED = 1;
@@ -191,23 +192,23 @@ public class PaintApplet extends Applet{
 		addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e){
 				switch(currentlyDrawing){
-					case 1:
+					case LINE:
 						currentShape =  new Line();
 					break;
 					
-					case 2:
+					case RECTANGLE:
 						currentShape = new Rectangle(currentSolidState);
 					break;
 					
-					case 3:
+					case OVAL:
 						currentShape = new Oval(currentSolidState);
 					break;
 					
-					case 4:
+					case PENCIL:
 						currentShape = new Line();
 					break;
 					
-					case 5:
+					case ERASER:
 						currentShape = new Line();
 					break;
 					
@@ -218,15 +219,15 @@ public class PaintApplet extends Applet{
 				if(currentShape != null){	// To handle if the user didn't choose a button
 					// Check for the color
 					switch(currentColor){
-						case 1:
+						case RED:
 							shapeColor = Color.RED;
 						break;
 						
-						case 2:
+						case GREEN:
 							shapeColor = Color.GREEN;
 						break;
 						
-						case 3:
+						case BLUE:
 							shapeColor = Color.BLUE;
 						break;
 					}
@@ -337,18 +338,18 @@ public class PaintApplet extends Applet{
 		if(currentShape != null){
 			graphicsObj.setColor(shapeColor);		// Set the shape's color
 			switch(currentlyDrawing){
-				case 1:
+				case LINE:
 					graphicsObj.drawLine(x1, y1, x2, y2);
 				break;
 				
-				case 2:
+				case RECTANGLE:
 					if(currentSolidState){
 						graphicsObj.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 					}
 					graphicsObj.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 				break;
 				
-				case 3:
+				case OVAL:
 					if(currentSolidState){
 						graphicsObj.fillOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 					}
