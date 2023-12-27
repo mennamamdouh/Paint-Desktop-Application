@@ -18,6 +18,7 @@ public class PaintApplet extends Applet{
 	public static final int LINE = 1;
 	public static final int RECTANGLE = 2;
 	public static final int OVAL = 3;
+	public static final int PENCIL = 4;
 	
 	// Colors numbering rules
 	public static final int RED = 1;
@@ -79,6 +80,18 @@ public class PaintApplet extends Applet{
 			}
 		});
 		add(ovalButton);
+		
+		// Our event source for the pencil button
+		Button pencilButton = new Button("Pencil");
+		
+		// Register the pencilButton listener to the pencilButton source
+		pencilButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 4;
+			}
+		});
+		add(pencilButton);
+		
 		
 		/*  Options of Colors --> Red - Green - Blue  */
 		
@@ -179,6 +192,10 @@ public class PaintApplet extends Applet{
 						currentShape = new Oval(currentSolidState);
 					break;
 					
+					case 4:
+						currentShape = new Line();
+					break;
+					
 					default:
 						currentShape = null;
 					break;
@@ -212,6 +229,8 @@ public class PaintApplet extends Applet{
 					x2 = e.getX();
 					y2 = e.getY();
 					currentShape.setEndPoint(x2, y2);
+					
+					// Repaint and add to the array list
 					repaint();
 					shapes.add(indexOfShapes, currentShape);
 					indexOfShapes++;
@@ -223,11 +242,31 @@ public class PaintApplet extends Applet{
 		addMouseMotionListener(new MouseAdapter(){
 			public void mouseDragged(MouseEvent e){
 				if(currentShape != null){
-					// Get the point that I'm in now
-					x2 = e.getX();
-					y2 = e.getY();
-					currentShape.setEndPoint(x2, y2);
+					// Check the Pencil and Eraser cases
+					switch(currentlyDrawing){
+						case 4:
+							x2 = e.getX();
+							y2 = e.getY();
+							currentShape = new Line();
+							currentShape.setColor(shapeColor);
+							currentShape.setFirstPoint(x1, y1);
+							currentShape.setEndPoint(x2, y2);
+							x1 = x2;
+							y1 = y2;
+						break;
+						
+						default:
+							// Get the end point then add the shape in the array list
+							x2 = e.getX();
+							y2 = e.getY();
+							currentShape.setEndPoint(x2, y2);
+						break;
+					}
+					
+					// Repaint and add to the array list
 					repaint();
+					shapes.add(indexOfShapes, currentShape);
+					indexOfShapes++;
 				}
 			}
 		});
