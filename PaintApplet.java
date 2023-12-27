@@ -7,6 +7,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Checkbox;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class PaintApplet extends Applet{
 	
@@ -25,6 +28,8 @@ public class PaintApplet extends Applet{
 	int currentColor;	// The color number from the colors numbering rules
 	Shape currentShape;
 	Color shapeColor;
+	Checkbox solidCheck;
+	boolean currentSolidState;
 	
 	// The parameters of any shape
 	private static int x1;
@@ -109,6 +114,24 @@ public class PaintApplet extends Applet{
 		});
 		add(blueButton);
 		
+		/*  Other options --> Solid Shapes  */
+		
+		// Our event source for the solid check box
+		solidCheck = new Checkbox("Solid");
+		
+		// Register the solidCheck listener to the solidCheck source
+		solidCheck.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent e){
+				if(e.getStateChange() == ItemEvent.SELECTED){
+					currentSolidState = true;
+				}
+				else{
+					currentSolidState = false;
+				}
+			}
+		});
+		add(solidCheck);
+		
 		
 		/*  Mouse events and listeners  */
 		
@@ -121,11 +144,11 @@ public class PaintApplet extends Applet{
 					break;
 					
 					case 2:
-						currentShape = new Rectangle();
+						currentShape = new Rectangle(currentSolidState);
 					break;
 					
 					case 3:
-						currentShape = new Oval();
+						currentShape = new Oval(currentSolidState);
 					break;
 				}
 				if(currentShape != null){	// To handle if the user didn't choose a button
@@ -145,6 +168,7 @@ public class PaintApplet extends Applet{
 					}
 					currentShape.setColor(shapeColor);
 					
+					// Get the first point
 					x1 = e.getX();
 					y1 = e.getY();
 					currentShape.setFirstPoint(x1, y1);
@@ -152,6 +176,7 @@ public class PaintApplet extends Applet{
 			}
 			public void mouseReleased(MouseEvent e){
 				if(currentShape != null){
+					// Get the end point then add the shape in the array list
 					x2 = e.getX();
 					y2 = e.getY();
 					currentShape.setEndPoint(x2, y2);
@@ -166,6 +191,7 @@ public class PaintApplet extends Applet{
 		addMouseMotionListener(new MouseAdapter(){
 			public void mouseDragged(MouseEvent e){
 				if(currentShape != null){
+					// Get the point that I'm in now
 					x2 = e.getX();
 					y2 = e.getY();
 					currentShape.setEndPoint(x2, y2);
@@ -196,10 +222,16 @@ public class PaintApplet extends Applet{
 				break;
 				
 				case 2:
+					if(currentSolidState){
+						graphicsObj.fillRect(x1, y1, x2 - x1, y2 - y1);
+					}
 					graphicsObj.drawRect(x1, y1, x2 - x1, y2 - y1);
 				break;
 				
 				case 3:
+					if(currentSolidState){
+						graphicsObj.fillOval(x1, y1, x2 - x1, y2 - y1);
+					}
 					graphicsObj.drawOval(x1, y1, x2 - x1, y2 - y1);
 				break;
 			}
@@ -212,6 +244,7 @@ abstract class Shape{
 	int x1, y1;
 	int x2, y2;
 	Color shapeColor;
+	boolean isSolid;
 	
 	// To set the first points at pressing the mouse
 	abstract void setFirstPoint(int x1, int y1);
@@ -225,15 +258,13 @@ abstract class Shape{
 	}
 	
 	// The draw method of the shape
-	abstract void draw(Graphics graphicsObj);
-	
+	abstract void draw(Graphics graphicsObj);	
 }
 
 class Line extends Shape{
 	
 	// The default constructor of the Line
 	Line(){
-		
 	}
 	
 	// To set the first points at pressing the mouse
@@ -260,8 +291,8 @@ class Line extends Shape{
 
 class Rectangle extends Shape{
 	// The default constructor of the Rectangle
-	Rectangle(){
-		
+	Rectangle(boolean isSolid){
+		this.isSolid = isSolid;
 	}
 	
 	// To set the first points at pressing the mouse
@@ -282,14 +313,17 @@ class Rectangle extends Shape{
 	@Override
 	void draw(Graphics graphicsObj){
 		graphicsObj.setColor(shapeColor);
+		if(this.isSolid){
+			graphicsObj.fillRect(x1, y1, x2, y2);
+		}
 		graphicsObj.drawRect(x1, y1, x2, y2);
 	}
 }
 
 class Oval extends Shape{
 	// The default constructor of the Rectangle
-	Oval(){
-		
+	Oval(boolean isSolid){
+		this.isSolid = isSolid;
 	}
 	
 	// To set the first points at pressing the mouse
@@ -310,6 +344,9 @@ class Oval extends Shape{
 	@Override
 	void draw(Graphics graphicsObj){
 		graphicsObj.setColor(shapeColor);
+		if(this.isSolid){
+			graphicsObj.fillOval(x1, y1, x2, y2);
+		}
 		graphicsObj.drawOval(x1, y1, x2, y2);
 	}
 }
