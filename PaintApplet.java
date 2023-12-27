@@ -26,6 +26,9 @@ public class PaintApplet extends Applet{
 	public static final int GREEN = 2;
 	public static final int BLUE = 3;
 	public static final int PINK = 4;
+	public static final int CYAN = 5;
+	public static final int MAGENTA = 6;
+	public static final int ORANGE = 7;
 	
 	// Define the variables which hold the current states
 	int currentlyDrawing = 0;	// The shape number from the shapes numbering rules
@@ -107,7 +110,7 @@ public class PaintApplet extends Applet{
 		add(eraserButton);
 		
 		
-		/*  Options of Colors --> Red - Green - Blue  */
+		/*  Options of Colors --> Red - Green - Blue - Pink  */
 		
 		// Our event source for the red button
 		Button redButton = new Button("Red");
@@ -152,6 +155,39 @@ public class PaintApplet extends Applet{
 			}
 		});
 		add(pinkButton);
+		
+		// Our event source for the cyan button
+		Button cyanButton = new Button("Cyan");
+		
+		// Register the cyanButton listener to the cyanButton source
+		cyanButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 5;
+			}
+		});
+		add(cyanButton);
+		
+		// Our event source for the magenta button
+		Button magentaButton = new Button("Magenta");
+		
+		// Register the magentaButton listener to the magentaButton source
+		magentaButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 6;
+			}
+		});
+		add(magentaButton);
+		
+		// Our event source for the orange button
+		Button orangeButton = new Button("Orange");
+		
+		// Register the orangeButton listener to the orangeButton source
+		orangeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 7;
+			}
+		});
+		add(orangeButton);
 		
 		/*  Other options --> Undo - Clear All - Solid Shapes  */
 		
@@ -301,6 +337,18 @@ public class PaintApplet extends Applet{
 						
 						case PINK:
 							shapeColor = Color.PINK;
+						break;
+						
+						case CYAN:
+							shapeColor = Color.CYAN;
+						break;
+						
+						case MAGENTA:
+							shapeColor = Color.MAGENTA;
+						break;
+						
+						case ORANGE:
+							shapeColor = Color.ORANGE;
 						break;
 						
 						default:
