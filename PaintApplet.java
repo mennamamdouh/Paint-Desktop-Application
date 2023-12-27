@@ -42,9 +42,10 @@ public class PaintApplet extends Applet{
 	private static int y2;
 	
 	int indexOfShapes = 0;    // Index of the array list. At first, number of shapes = 0
-
-	// The array list which stores the shapes
-	ArrayList<Shape> shapes = new ArrayList<Shape>();
+	ArrayList<Shape> shapes = new ArrayList<Shape>();	// The array list which stores the shapes
+	
+	int indexOfRemovedShapes = 0;	// Index of the array list which holds the shapes removed from Undo operation
+	ArrayList<Shape> removedShapes = new ArrayList<Shape>();	// The array list which stores the removed shapes
 	
 	public void init(){
 		
@@ -152,7 +153,62 @@ public class PaintApplet extends Applet{
 		});
 		add(pinkButton);
 		
-		/*  Other options --> Clear All - Solid Shapes  */
+		/*  Other options --> Undo - Clear All - Solid Shapes  */
+		
+		// Our event source for the undo button
+		Button undoButton = new Button("Undo");
+		
+		// Register the undoButton listener to the undoButton source
+		undoButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(indexOfShapes > 0){
+					// The idea behind undo is to remove the previous shape from the array list
+					Shape previousShape = shapes.get(indexOfShapes - 1);
+					
+					// Add it in the removed shapes array list in order to get it back in the redo operation and increment its index
+					removedShapes.add(indexOfRemovedShapes, previousShape);
+					indexOfRemovedShapes++;
+					
+					// Remove that shape from the shapes array list
+					shapes.remove(indexOfShapes - 1);
+					
+					// Set the default properties
+					currentlyDrawing = 0;
+					currentColor = 0;
+					currentSolidState = false;
+					
+					// Then repaint
+					repaint();
+					indexOfShapes--;
+				}
+			}
+		});
+		add(undoButton);
+		
+		// Our event source for the redo button
+		Button redoButton = new Button("Redo");
+		
+		// Register the redoButton listener to the redoButton source
+		redoButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(indexOfRemovedShapes > 0){
+					// The idea behind redo is to get the last stored shape in the removedShapes array list
+					Shape restoredShape = removedShapes.get(indexOfRemovedShapes - 1);
+					
+					// Add it again in the shapes array list
+					shapes.add(indexOfShapes, restoredShape);
+					indexOfShapes++;
+					
+					// Remove that shape from the shapes array list
+					removedShapes.remove(indexOfRemovedShapes - 1);
+					indexOfRemovedShapes--;
+					
+					// Then repaint
+					repaint();
+				}
+			}
+		});
+		add(redoButton);
 		
 		// Our event source for the clear all button
 		Button clearAllButton = new Button("Clear All");
