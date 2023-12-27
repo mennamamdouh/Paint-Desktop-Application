@@ -6,15 +6,21 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class PaintApplet extends Applet{
 	
 	// Shapes numbering rules
 	public static final int LINE = 1;
 	
+	// Colors numbering rules
+	public static final int RED = 1;
+	
 	// Define the variables which hold the current states
 	int currentlyDrawing = 0;	// The shape number from the shapes numbering rules
+	int currentColor;	// The color number from the colors numbering rules
 	Shape currentShape;
+	Color shapeColor;
 	
 	// The parameters of any shape
 	private static int x1;
@@ -35,9 +41,20 @@ public class PaintApplet extends Applet{
 		lineButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 						currentlyDrawing = 1;
-				}
+			}
 		});
 		add(lineButton);
+				
+		// Our event source for the red button
+		Button redButton = new Button("Red");
+		
+		// Register the redButton listener to the redButton source
+		redButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 1;
+			}
+		});
+		add(redButton);
 		
 		/*  Mouse events and listeners  */
 		
@@ -50,6 +67,14 @@ public class PaintApplet extends Applet{
 					break;
 				}
 				if(currentShape != null){	// To handle if the user didn't choose a button
+					// Check for the color
+					switch(currentColor){
+						case 1:
+							shapeColor = Color.RED;
+						break;
+					}
+					currentShape.setColor(shapeColor);
+					
 					x1 = e.getX();
 					y1 = e.getY();
 					currentShape.setFirstPoint(x1, y1);
@@ -94,6 +119,7 @@ public class PaintApplet extends Applet{
 		
 		// Draw the currently drawing shape
 		if(currentShape != null){
+			graphicsObj.setColor(shapeColor);		// Set the shape's color
 			switch(currentlyDrawing){
 				case 1:
 					graphicsObj.drawLine(x1, y1, x2, y2);
@@ -107,6 +133,7 @@ abstract class Shape{
 	// Define the parameters of any shape
 	int x1, y1;
 	int x2, y2;
+	Color shapeColor;
 	
 	// To set the first points at pressing the mouse
 	abstract void setFirstPoint(int x1, int y1);
@@ -114,8 +141,14 @@ abstract class Shape{
 	// To set the end points at releasing the mouse
 	abstract void setEndPoint(int x2, int y2);
 	
+	// To set the color of the shape
+	void setColor(Color shapeColor){
+		this.shapeColor = shapeColor;
+	}
+	
 	// The draw method of the shape
 	abstract void draw(Graphics graphicsObj);
+	
 }
 
 class Line extends Shape{
@@ -142,6 +175,7 @@ class Line extends Shape{
 	// The draw method of the Line
 	@Override
 	void draw(Graphics graphicsObj){
+		graphicsObj.setColor(shapeColor);
 		graphicsObj.drawLine(x1, y1, x2, y2);
 	}
 }
