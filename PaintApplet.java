@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Checkbox;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.Dimension;
 
 public class PaintApplet extends Applet{
 	
@@ -114,7 +115,34 @@ public class PaintApplet extends Applet{
 		});
 		add(blueButton);
 		
-		/*  Other options --> Solid Shapes  */
+		/*  Other options --> Clear All - Solid Shapes  */
+		
+		// Our event source for the clear all button
+		Button clearAllButton = new Button("Clear All");
+		
+		// Register the clearAllButton listener to the clearAllButton source
+		clearAllButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				// Applet properties
+				Dimension appletDimension = getSize();
+				Color appletColor = getBackground();
+				currentlyDrawing = 0;
+				currentColor = 0;
+				currentSolidState = false;
+				
+				// Draw a rectangle with the applet's background
+				currentShape = new Rectangle(true);
+				currentShape.setColor(appletColor);
+				currentShape.setFirstPoint(0, 0);
+				currentShape.setEndPoint(appletDimension.width, appletDimension.height);
+				
+				// Add the shape to the array list
+				repaint();
+				shapes.add(indexOfShapes, currentShape);
+				indexOfShapes++;
+			}
+		});
+		add(clearAllButton);
 		
 		// Our event source for the solid check box
 		solidCheck = new Checkbox("Solid");
@@ -149,6 +177,10 @@ public class PaintApplet extends Applet{
 					
 					case 3:
 						currentShape = new Oval(currentSolidState);
+					break;
+					
+					default:
+						currentShape = null;
 					break;
 				}
 				if(currentShape != null){	// To handle if the user didn't choose a button
