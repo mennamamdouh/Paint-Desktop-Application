@@ -12,6 +12,7 @@ public class PaintApplet extends Applet{
 	
 	// Shapes numbering rules
 	public static final int LINE = 1;
+	public static final int RECTANGLE = 2;
 	
 	// Colors numbering rules
 	public static final int RED = 1;
@@ -34,6 +35,9 @@ public class PaintApplet extends Applet{
 	ArrayList<Shape> shapes = new ArrayList<Shape>();
 	
 	public void init(){
+		
+		/*  Options of Shapes --> New Line - New Rectangle - New Oval  */
+		
 		// Our event source for the line button
 		Button lineButton = new Button("Line");
 		
@@ -44,6 +48,17 @@ public class PaintApplet extends Applet{
 			}
 		});
 		add(lineButton);
+		
+		// Our event source for the rectangle button
+		Button rectangleButton = new Button("Rectangle");
+		
+		// Register the rectangleButton listener to the rectangleButton source
+		rectangleButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 2;
+			}
+		});
+		add(rectangleButton);
 				
 		// Our event source for the red button
 		Button redButton = new Button("Red");
@@ -64,6 +79,10 @@ public class PaintApplet extends Applet{
 				switch(currentlyDrawing){
 					case 1:
 						currentShape =  new Line();
+					break;
+					
+					case 2:
+						currentShape = new Rectangle();
 					break;
 				}
 				if(currentShape != null){	// To handle if the user didn't choose a button
@@ -124,6 +143,10 @@ public class PaintApplet extends Applet{
 				case 1:
 					graphicsObj.drawLine(x1, y1, x2, y2);
 				break;
+				
+				case 2:
+					graphicsObj.drawRect(x1, y1, x2 - x1, y2 - y1);
+				break;
 			}
 		}
 	}
@@ -177,5 +200,33 @@ class Line extends Shape{
 	void draw(Graphics graphicsObj){
 		graphicsObj.setColor(shapeColor);
 		graphicsObj.drawLine(x1, y1, x2, y2);
+	}
+}
+
+class Rectangle extends Shape{
+	// The default constructor of the Rectangle
+	Rectangle(){
+		
+	}
+	
+	// To set the first points at pressing the mouse
+	@Override
+	void setFirstPoint(int x1, int y1){
+		this.x1 = x1;
+		this.y1 = y1;
+	}
+	
+	// To set the end points at releasing the mouse
+	@Override
+	void setEndPoint(int x2, int y2){
+		this.x2 = x2 - x1;
+		this.y2 = y2 - y1;
+	}
+	
+	// The draw method of the Line
+	@Override
+	void draw(Graphics graphicsObj){
+		graphicsObj.setColor(shapeColor);
+		graphicsObj.drawRect(x1, y1, x2, y2);
 	}
 }
