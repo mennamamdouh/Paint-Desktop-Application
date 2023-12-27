@@ -25,6 +25,7 @@ public class PaintApplet extends Applet{
 	public static final int RED = 1;
 	public static final int GREEN = 2;
 	public static final int BLUE = 3;
+	public static final int PINK = 4;
 	
 	// Define the variables which hold the current states
 	int currentlyDrawing = 0;	// The shape number from the shapes numbering rules
@@ -140,6 +141,17 @@ public class PaintApplet extends Applet{
 		});
 		add(blueButton);
 		
+		// Our event source for the pink button
+		Button pinkButton = new Button("Pink");
+		
+		// Register the pinkButton listener to the pinkButton source
+		pinkButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 4;
+			}
+		});
+		add(pinkButton);
+		
 		/*  Other options --> Clear All - Solid Shapes  */
 		
 		// Our event source for the clear all button
@@ -229,6 +241,14 @@ public class PaintApplet extends Applet{
 						
 						case BLUE:
 							shapeColor = Color.BLUE;
+						break;
+						
+						case PINK:
+							shapeColor = Color.PINK;
+						break;
+						
+						default:
+							shapeColor = Color.BLACK;
 						break;
 					}
 					currentShape.setColor(shapeColor);
