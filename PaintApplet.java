@@ -13,6 +13,7 @@ public class PaintApplet extends Applet{
 	// Shapes numbering rules
 	public static final int LINE = 1;
 	public static final int RECTANGLE = 2;
+	public static final int OVAL = 3;
 	
 	// Colors numbering rules
 	public static final int RED = 1;
@@ -59,6 +60,18 @@ public class PaintApplet extends Applet{
 			}
 		});
 		add(rectangleButton);
+		
+		// Our event source for the oval button
+		Button ovalButton = new Button("Oval");
+		
+		// Register the rectangleButton listener to the rectangleButton source
+		ovalButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 3;
+			}
+		});
+		add(ovalButton);
+		
 				
 		// Our event source for the red button
 		Button redButton = new Button("Red");
@@ -83,6 +96,10 @@ public class PaintApplet extends Applet{
 					
 					case 2:
 						currentShape = new Rectangle();
+					break;
+					
+					case 3:
+						currentShape = new Oval();
 					break;
 				}
 				if(currentShape != null){	// To handle if the user didn't choose a button
@@ -146,6 +163,10 @@ public class PaintApplet extends Applet{
 				
 				case 2:
 					graphicsObj.drawRect(x1, y1, x2 - x1, y2 - y1);
+				break;
+				
+				case 3:
+					graphicsObj.drawOval(x1, y1, x2 - x1, y2 - y1);
 				break;
 			}
 		}
@@ -228,5 +249,33 @@ class Rectangle extends Shape{
 	void draw(Graphics graphicsObj){
 		graphicsObj.setColor(shapeColor);
 		graphicsObj.drawRect(x1, y1, x2, y2);
+	}
+}
+
+class Oval extends Shape{
+	// The default constructor of the Rectangle
+	Oval(){
+		
+	}
+	
+	// To set the first points at pressing the mouse
+	@Override
+	void setFirstPoint(int x1, int y1){
+		this.x1 = x1;
+		this.y1 = y1;
+	}
+	
+	// To set the end points at releasing the mouse
+	@Override
+	void setEndPoint(int x2, int y2){
+		this.x2 = x2 - x1;
+		this.y2 = y2 - y1;
+	}
+	
+	// The draw method of the Line
+	@Override
+	void draw(Graphics graphicsObj){
+		graphicsObj.setColor(shapeColor);
+		graphicsObj.drawOval(x1, y1, x2, y2);
 	}
 }
