@@ -37,6 +37,7 @@ public class PaintApplet extends Applet{
 	Color shapeColor;
 	Checkbox solidCheck;
 	boolean currentSolidState;
+	boolean wasDragging = false;	// To check if I was dragging before pressing or not
 	
 	// The parameters of any shape
 	private static int x1;
@@ -281,15 +282,16 @@ public class PaintApplet extends Applet{
 			
 			public void mouseReleased(MouseEvent e){
 				if(currentShape != null){
-					// Get the end point then add the shape in the array list
-					x2 = e.getX();
-					y2 = e.getY();
-					currentShape.setEndPoint(x2, y2);
-					
-					// Repaint and add the shape to the array list
-					repaint();
-					shapes.add(indexOfShapes, currentShape);
-					indexOfShapes++;
+					if(wasDragging){
+						x2 = e.getX();
+						y2 = e.getY();
+						currentShape.setEndPoint(x2, y2);
+						// Repaint and add the shape to the array list
+						repaint();
+						shapes.add(indexOfShapes, currentShape);
+						indexOfShapes++;
+						wasDragging = false;
+					}
 				}
 			}
 		});
@@ -298,44 +300,48 @@ public class PaintApplet extends Applet{
 		addMouseMotionListener(new MouseAdapter(){
 			public void mouseDragged(MouseEvent e){
 				if(currentShape != null){
+					// First, raise the flag of wasDragging
+					wasDragging = true;
+					
+					// Initialize the width and height of the rectangle which is drawn using Pencil or Eraser
+					int width = 3;
+					int height = 3;
+					
 					/* Check the Pencil and Eraser cases.
 						The idea behind them is to add a new line object while I'm dragging. This line will be very short, just one-unit length.
 						If it's a pencil, it will be colored with the selected color. If it's an eraser, it will be white. */
+					
 					switch(currentlyDrawing){
 						case PENCIL:
 							// Create new line objects while dragging
-							currentShape = new Line();
+							currentShape = new Rectangle(true);
 							currentShape.setColor(shapeColor);
-							// First coordinate
+							// Set the first coordinate, the width and height of the eraser
 							currentShape.setFirstPoint(x1, y1);
-							// Get the end point
-							x2 = e.getX();
-							y2 = e.getY();
-							currentShape.setEndPoint(x2, y2);
+							// Set the end point as it's 5 unit apart from the first point
+							currentShape.setEndPoint(x1 + width, y1 + height);
 							// Then add each line object
 							shapes.add(indexOfShapes, currentShape);
 							indexOfShapes++;
 							// Update the next first point from we ended
-							x1 = x2;
-							y1 = y2;
+							x1 = e.getX();
+							y1 = e.getY();
 						break;
 						
 						case ERASER:
-							// Create new line objects while dragging
-							currentShape = new Line();
+							// Create new freehand objects while dragging
+							currentShape = new Rectangle(true);
 							currentShape.setColor(Color.WHITE);
-							// First coordinate
+							// Set the first coordinate, the width and height of the eraser
 							currentShape.setFirstPoint(x1, y1);
-							// Get the end point
-							x2 = e.getX();
-							y2 = e.getY();
-							currentShape.setEndPoint(x2, y2);
+							// Set the end point as it's 5 unit apart from the first point
+							currentShape.setEndPoint(x1 + width, y1 + height);
 							// Then add each line object
 							shapes.add(indexOfShapes, currentShape);
 							indexOfShapes++;
 							// Update the next first point from we ended
-							x1 = x2;
-							y1 = y2;
+							x1 = e.getX();
+							y1 = e.getY();
 						break;
 						
 						default:	// The code for normal shapes
@@ -419,11 +425,11 @@ public class PaintApplet extends Applet{
 			break;
 			
 			case PENCIL:
-				currentShape = new Line();
+				currentShape = new Rectangle(true);
 			break;
 			
 			case ERASER:
-				currentShape = new Line();
+				currentShape = new Rectangle(true);
 			break;
 			
 			default:
