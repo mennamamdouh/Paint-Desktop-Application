@@ -50,6 +50,132 @@ public class PaintApplet extends Applet{
 	
 	public void init(){
 		
+		/*  Options of Shapes --> Line - Rectangle - Oval - Free-hand Pencil & Eraser  */
+		
+		// Our event source for the line button
+		Button lineButton = new Button("Line");
+		// Register the lineButton listener to the lineButton source
+		lineButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 1;
+			}
+		});
+		add(lineButton);
+		lineButton.setBackground(Color.DARK_GRAY);
+		lineButton.setForeground(Color.WHITE);
+		
+		// Our event source for the rectangle button
+		Button rectangleButton = new Button("Rectangle");
+		// Register the rectangleButton listener to the rectangleButton source
+		rectangleButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 2;
+			}
+		});
+		add(rectangleButton);
+		rectangleButton.setBackground(Color.DARK_GRAY);
+		rectangleButton.setForeground(Color.WHITE);
+		
+		// Our event source for the oval button
+		Button ovalButton = new Button("Oval");
+		// Register the rectangleButton listener to the rectangleButton source
+		ovalButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 3;
+			}
+		});
+		add(ovalButton);
+		ovalButton.setBackground(Color.DARK_GRAY);
+		ovalButton.setForeground(Color.WHITE);
+		
+		// Our event source for the pencil button
+		Button pencilButton = new Button("Pencil");
+		// Register the pencilButton listener to the pencilButton source
+		pencilButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 4;
+			}
+		});
+		add(pencilButton);
+		pencilButton.setBackground(Color.DARK_GRAY);
+		pencilButton.setForeground(Color.WHITE);
+		
+		// Our event source for the eraser button
+		Button eraserButton = new Button("Eraser");
+		// Register the pencilButton listener to the pencilButton source
+		eraserButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+						currentlyDrawing = 5;
+			}
+		});
+		add(eraserButton);
+		eraserButton.setBackground(Color.DARK_GRAY);
+		eraserButton.setForeground(Color.WHITE);
+		
+		
+		/* Extra options -> Undo - Clear All */
+		
+		// Our event source for the undo button
+		Button undoButton = new Button("Undo");
+		
+		// Register the undoButton listener to the undoButton source
+		undoButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(indexOfShapes > 0){
+					/* The idea behind undo is to remove the last-added shape from the shapes array list */
+					
+					// Removed the last-added shape
+					shapes.remove(indexOfShapes - 1);
+					
+					// Set the default properties -> The user has to select the shape again to be able to draw
+					currentlyDrawing = 0;
+					currentColor = 0;
+					currentSolidState = false;
+					
+					// Then repaint
+					repaint();
+					indexOfShapes--;
+				}
+			}
+		});
+		add(undoButton);
+		undoButton.setBackground(Color.DARK_GRAY);
+		undoButton.setForeground(Color.WHITE);
+		
+		// Our event source for the clear all button
+		Button clearAllButton = new Button("Clear All");
+		
+		// Register the clearAllButton listener to the clearAllButton source
+		clearAllButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				/* The idea behind the clearAllButton is to draw a rectangle that has the same size and background color of the applet */
+				
+				// Applet properties -> size and background color
+				Dimension appletDimension = getSize();
+				Color appletColor = getBackground();
+				
+				// Set the default properties
+				currentlyDrawing = 0;
+				currentColor = 0;
+				currentSolidState = false;
+				
+				// Draw the required rectangle
+				currentShape = new Rectangle(true);
+				currentShape.setColor(appletColor);
+				currentShape.setFirstPoint(0, 0);
+				currentShape.setEndPoint(appletDimension.width, appletDimension.height);
+				
+				// Add the rectangle as a shape to the array list
+				repaint();
+				shapes.add(indexOfShapes, currentShape);
+				indexOfShapes++;
+			}
+		});
+		add(clearAllButton);
+		clearAllButton.setBackground(Color.DARK_GRAY);
+		clearAllButton.setForeground(Color.WHITE);
+		
+		
 		/*  Options of Colors --> Red - Green - Blue - Pink - Cyan - Magenta - Orange  */
 		
 		// Our event source for the red button
@@ -135,117 +261,6 @@ public class PaintApplet extends Applet{
 		add(orangeButton);
 		orangeButton.setBackground(Color.ORANGE);
 		orangeButton.setForeground(Color.WHITE);
-		
-		/*  Options of Shapes --> Line - Rectangle - Oval - Free-hand Pencil & Eraser  */
-		
-		// Our event source for the line button
-		Button lineButton = new Button("Line");
-		// Register the lineButton listener to the lineButton source
-		lineButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-						currentlyDrawing = 1;
-			}
-		});
-		add(lineButton);
-		
-		// Our event source for the rectangle button
-		Button rectangleButton = new Button("Rectangle");
-		// Register the rectangleButton listener to the rectangleButton source
-		rectangleButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-						currentlyDrawing = 2;
-			}
-		});
-		add(rectangleButton);
-		
-		// Our event source for the oval button
-		Button ovalButton = new Button("Oval");
-		// Register the rectangleButton listener to the rectangleButton source
-		ovalButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-						currentlyDrawing = 3;
-			}
-		});
-		add(ovalButton);
-		
-		// Our event source for the pencil button
-		Button pencilButton = new Button("Pencil");
-		// Register the pencilButton listener to the pencilButton source
-		pencilButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-						currentlyDrawing = 4;
-			}
-		});
-		add(pencilButton);
-		
-		// Our event source for the eraser button
-		Button eraserButton = new Button("Eraser");
-		// Register the pencilButton listener to the pencilButton source
-		eraserButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-						currentlyDrawing = 5;
-			}
-		});
-		add(eraserButton);
-		
-		
-		/*  Other options --> Undo - Clear All - Solid Shapes  */
-		
-		// Our event source for the undo button
-		Button undoButton = new Button("Undo");
-		
-		// Register the undoButton listener to the undoButton source
-		undoButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				if(indexOfShapes > 0){
-					/* The idea behind undo is to remove the last-added shape from the shapes array list */
-					
-					// Removed the last-added shape
-					shapes.remove(indexOfShapes - 1);
-					
-					// Set the default properties -> The user has to select the shape again to be able to draw
-					currentlyDrawing = 0;
-					currentColor = 0;
-					currentSolidState = false;
-					
-					// Then repaint
-					repaint();
-					indexOfShapes--;
-				}
-			}
-		});
-		add(undoButton);
-		
-		// Our event source for the clear all button
-		Button clearAllButton = new Button("Clear All");
-		
-		// Register the clearAllButton listener to the clearAllButton source
-		clearAllButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				/* The idea behind the clearAllButton is to draw a rectangle that has the same size and background color of the applet */
-				
-				// Applet properties -> size and background color
-				Dimension appletDimension = getSize();
-				Color appletColor = getBackground();
-				
-				// Set the default properties
-				currentlyDrawing = 0;
-				currentColor = 0;
-				currentSolidState = false;
-				
-				// Draw the required rectangle
-				currentShape = new Rectangle(true);
-				currentShape.setColor(appletColor);
-				currentShape.setFirstPoint(0, 0);
-				currentShape.setEndPoint(appletDimension.width, appletDimension.height);
-				
-				// Add the rectangle as a shape to the array list
-				repaint();
-				shapes.add(indexOfShapes, currentShape);
-				indexOfShapes++;
-			}
-		});
-		add(clearAllButton);
 		
 		// Our event source for the solid check box
 		solidCheck = new Checkbox("Solid");
