@@ -52,11 +52,10 @@ public class PaintApplet extends Applet{
 	
 	public void init(){
 		
-		/*  Options of Colors --> Red - Green - Blue - Pink  */
+		/*  Options of Colors --> Red - Green - Blue - Pink - Cyan - Magenta - Orange  */
 		
 		// Our event source for the red button
 		Button redButton = new Button("Red");
-		
 		// Register the redButton listener to the redButton source
 		redButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -69,7 +68,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the green button
 		Button greenButton = new Button("Green");
-		
 		// Register the greenButton listener to the greenButton source
 		greenButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -82,7 +80,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the blue button
 		Button blueButton = new Button("Blue");
-		
 		// Register the blueButton listener to the blueButton source
 		blueButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -95,7 +92,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the pink button
 		Button pinkButton = new Button("Pink");
-		
 		// Register the pinkButton listener to the pinkButton source
 		pinkButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -108,7 +104,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the cyan button
 		Button cyanButton = new Button("Cyan");
-		
 		// Register the cyanButton listener to the cyanButton source
 		cyanButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -121,7 +116,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the magenta button
 		Button magentaButton = new Button("Magenta");
-		
 		// Register the magentaButton listener to the magentaButton source
 		magentaButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -134,7 +128,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the orange button
 		Button orangeButton = new Button("Orange");
-		
 		// Register the orangeButton listener to the orangeButton source
 		orangeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -145,11 +138,10 @@ public class PaintApplet extends Applet{
 		orangeButton.setBackground(Color.ORANGE);
 		orangeButton.setForeground(Color.WHITE);
 		
-		/*  Options of Shapes --> New Line - New Rectangle - New Oval  */
+		/*  Options of Shapes --> Line - Rectangle - Oval - Free-hand Pencil & Eraser  */
 		
 		// Our event source for the line button
 		Button lineButton = new Button("Line");
-		
 		// Register the lineButton listener to the lineButton source
 		lineButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -160,7 +152,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the rectangle button
 		Button rectangleButton = new Button("Rectangle");
-		
 		// Register the rectangleButton listener to the rectangleButton source
 		rectangleButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -171,7 +162,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the oval button
 		Button ovalButton = new Button("Oval");
-		
 		// Register the rectangleButton listener to the rectangleButton source
 		ovalButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -182,7 +172,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the pencil button
 		Button pencilButton = new Button("Pencil");
-		
 		// Register the pencilButton listener to the pencilButton source
 		pencilButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -193,7 +182,6 @@ public class PaintApplet extends Applet{
 		
 		// Our event source for the eraser button
 		Button eraserButton = new Button("Eraser");
-		
 		// Register the pencilButton listener to the pencilButton source
 		eraserButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -212,17 +200,12 @@ public class PaintApplet extends Applet{
 		undoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(indexOfShapes > 0){
-					// The idea behind undo is to remove the previous shape from the array list
-					Shape previousShape = shapes.get(indexOfShapes - 1);
+					/* The idea behind undo is to remove the last-added shape from the shapes array list */
 					
-					// Add it in the removed shapes array list in order to get it back in the redo operation and increment its index
-					removedShapes.add(indexOfRemovedShapes, previousShape);
-					indexOfRemovedShapes++;
-					
-					// Remove that shape from the shapes array list
+					// Removed the last-added shape
 					shapes.remove(indexOfShapes - 1);
 					
-					// Set the default properties
+					// Set the default properties -> The user has to select the shape again to be able to draw
 					currentlyDrawing = 0;
 					currentColor = 0;
 					currentSolidState = false;
@@ -235,51 +218,30 @@ public class PaintApplet extends Applet{
 		});
 		add(undoButton);
 		
-		// Our event source for the redo button
-		Button redoButton = new Button("Redo");
-		
-		// Register the redoButton listener to the redoButton source
-		redoButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				if(indexOfRemovedShapes > 0){
-					// The idea behind redo is to get the last stored shape in the removedShapes array list
-					Shape restoredShape = removedShapes.get(indexOfRemovedShapes - 1);
-					
-					// Add it again in the shapes array list
-					shapes.add(indexOfShapes, restoredShape);
-					indexOfShapes++;
-					
-					// Remove that shape from the shapes array list
-					removedShapes.remove(indexOfRemovedShapes - 1);
-					indexOfRemovedShapes--;
-					
-					// Then repaint
-					repaint();
-				}
-			}
-		});
-		add(redoButton);
-		
 		// Our event source for the clear all button
 		Button clearAllButton = new Button("Clear All");
 		
 		// Register the clearAllButton listener to the clearAllButton source
 		clearAllButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// Applet properties
+				/* The idea behind the clearAllButton is to draw a rectangle that has the same size and background color of the applet */
+				
+				// Applet properties -> size and background color
 				Dimension appletDimension = getSize();
 				Color appletColor = getBackground();
+				
+				// Set the default properties
 				currentlyDrawing = 0;
 				currentColor = 0;
 				currentSolidState = false;
 				
-				// Draw a rectangle with the applet's background
+				// Draw the required rectangle
 				currentShape = new Rectangle(true);
 				currentShape.setColor(appletColor);
 				currentShape.setFirstPoint(0, 0);
 				currentShape.setEndPoint(appletDimension.width, appletDimension.height);
 				
-				// Add the shape to the array list
+				// Add the rectangle as a shape to the array list
 				repaint();
 				shapes.add(indexOfShapes, currentShape);
 				indexOfShapes++;
@@ -293,6 +255,8 @@ public class PaintApplet extends Applet{
 		// Register the solidCheck listener to the solidCheck source
 		solidCheck.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e){
+				// Check for the state of the checkbox, if it's selected then marks the currentSolidState to be true
+				// so that the shape can be drawn as solid, else marks the currentSolidState to be false
 				if(e.getStateChange() == ItemEvent.SELECTED){
 					currentSolidState = true;
 				}
@@ -325,7 +289,7 @@ public class PaintApplet extends Applet{
 					y2 = e.getY();
 					currentShape.setEndPoint(x2, y2);
 					
-					// Repaint and add to the array list
+					// Repaint and add the shape to the array list
 					repaint();
 					shapes.add(indexOfShapes, currentShape);
 					indexOfShapes++;
