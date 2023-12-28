@@ -403,17 +403,12 @@ public class PaintApplet extends Applet{
 	}
 
 	public void paint(Graphics graphicsObj){
-		// Define 2 variables: width & height for the shapes rectangle and oval.
-		int width;
-		int height;
-		
 		// Draw the stored shapes
 		for(int counter = 0; counter < indexOfShapes; counter ++)
 		{
 			Shape currentShape = shapes.get(counter);
 			currentShape.draw(graphicsObj);
 		}
-		
 		drawCurrentShape(graphicsObj);	// Then call the method that draws the current selected shape
 	}
 	
