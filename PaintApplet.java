@@ -309,73 +309,15 @@ public class PaintApplet extends Applet{
 		// Register the mouse listener
 		addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e){
-				switch(currentlyDrawing){
-					case LINE:
-						currentShape =  new Line();
-					break;
-					
-					case RECTANGLE:
-						currentShape = new Rectangle(currentSolidState);
-					break;
-					
-					case OVAL:
-						currentShape = new Oval(currentSolidState);
-					break;
-					
-					case PENCIL:
-						currentShape = new Line();
-					break;
-					
-					case ERASER:
-						currentShape = new Line();
-					break;
-					
-					default:
-						currentShape = null;
-					break;
-				}
+				checkShape(currentlyDrawing);	// Call the method that checks the value of currentlyDrawing and creates new object from the target shape class
 				if(currentShape != null){	// To handle if the user didn't choose a button
-					// Check for the color
-					switch(currentColor){
-						case RED:
-							shapeColor = Color.RED;
-						break;
-						
-						case GREEN:
-							shapeColor = Color.GREEN;
-						break;
-						
-						case BLUE:
-							shapeColor = Color.BLUE;
-						break;
-						
-						case PINK:
-							shapeColor = Color.PINK;
-						break;
-						
-						case CYAN:
-							shapeColor = Color.CYAN;
-						break;
-						
-						case MAGENTA:
-							shapeColor = Color.MAGENTA;
-						break;
-						
-						case ORANGE:
-							shapeColor = Color.ORANGE;
-						break;
-						
-						default:
-							shapeColor = Color.BLACK;
-						break;
-					}
-					currentShape.setColor(shapeColor);
-					
+					checkColor(currentColor);	// Call the method that checks the value of currentcolor and set the appropriate color to the currentShape
 					// Get the first point
 					x1 = e.getX();
 					y1 = e.getY();
 				}
 			}
+			
 			public void mouseReleased(MouseEvent e){
 				if(currentShape != null){
 					// Get the end point then add the shape in the array list
@@ -397,7 +339,7 @@ public class PaintApplet extends Applet{
 				if(currentShape != null){
 					// Check the Pencil and Eraser cases
 					switch(currentlyDrawing){
-						case 4:
+						case PENCIL:
 							
 							// Create new line objects while dragging
 							currentShape = new Line();
@@ -420,7 +362,7 @@ public class PaintApplet extends Applet{
 							y1 = y2;
 						break;
 						
-						case 5:
+						case ERASER:
 							// Create new line objects while dragging
 							currentShape = new Line();
 							currentShape.setColor(Color.WHITE);
@@ -494,6 +436,74 @@ public class PaintApplet extends Applet{
 					graphicsObj.drawOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
 				break;
 			}
+		}
+	}
+	
+	/* This method to check the currentColor choice that results from the color buttons selection, and then switch on this value to set an appropriate color */
+	public void checkColor(int currentColor){
+		// Check for the color
+		switch(currentColor){
+			case RED:
+				shapeColor = Color.RED;
+			break;
+			
+			case GREEN:
+				shapeColor = Color.GREEN;
+			break;
+			
+			case BLUE:
+				shapeColor = Color.BLUE;
+			break;
+			
+			case PINK:
+				shapeColor = Color.PINK;
+			break;
+			
+			case CYAN:
+				shapeColor = Color.CYAN;
+			break;
+			
+			case MAGENTA:
+				shapeColor = Color.MAGENTA;
+			break;
+			
+			case ORANGE:
+				shapeColor = Color.ORANGE;
+			break;
+			
+			default:
+				shapeColor = Color.BLACK;
+			break;
+		}
+		currentShape.setColor(shapeColor);
+	}
+	
+	/* This method to check the currentlyDrawing choice that results from the shape buttons selection, and then creates new object from the appropriate shape */
+	public void checkShape(int currentlyDrawing){
+		switch(currentlyDrawing){
+			case LINE:
+				currentShape =  new Line();
+			break;
+			
+			case RECTANGLE:
+				currentShape = new Rectangle(currentSolidState);
+			break;
+			
+			case OVAL:
+				currentShape = new Oval(currentSolidState);
+			break;
+			
+			case PENCIL:
+				currentShape = new Line();
+			break;
+			
+			case ERASER:
+				currentShape = new Line();
+			break;
+			
+			default:
+				currentShape = null;
+			break;
 		}
 	}
 }
