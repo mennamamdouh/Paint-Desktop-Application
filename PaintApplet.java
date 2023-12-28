@@ -414,29 +414,7 @@ public class PaintApplet extends Applet{
 			currentShape.draw(graphicsObj);
 		}
 		
-		// Draw the currently drawing shape
-		if(currentShape != null){
-			graphicsObj.setColor(shapeColor);		// Set the shape's color
-			switch(currentlyDrawing){
-				case LINE:
-					graphicsObj.drawLine(x1, y1, x2, y2);
-				break;
-				
-				case RECTANGLE:
-					if(currentSolidState){
-						graphicsObj.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-					}
-					graphicsObj.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-				break;
-				
-				case OVAL:
-					if(currentSolidState){
-						graphicsObj.fillOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-					}
-					graphicsObj.drawOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-				break;
-			}
-		}
+		drawCurrentShape(graphicsObj);	// Then call the method that draws the current selected shape
 	}
 	
 	/* This method to check the currentColor choice that results from the color buttons selection, and then switch on this value to set an appropriate color */
@@ -504,6 +482,33 @@ public class PaintApplet extends Applet{
 			default:
 				currentShape = null;
 			break;
+		}
+	}
+
+	/* This method for drawing the current selected shape */
+	public void drawCurrentShape(Graphics graphicsObj){
+		// Draw the currently drawing shape
+		if(currentShape != null){
+			graphicsObj.setColor(shapeColor);		// Set the shape's color
+			switch(currentlyDrawing){
+				case LINE:
+					graphicsObj.drawLine(x1, y1, x2, y2);
+				break;
+				
+				case RECTANGLE:
+					if(currentSolidState){
+						graphicsObj.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+					}
+					graphicsObj.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+				break;
+				
+				case OVAL:
+					if(currentSolidState){
+						graphicsObj.fillOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+					}
+					graphicsObj.drawOval(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+				break;
+			}
 		}
 	}
 }
