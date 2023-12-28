@@ -47,9 +47,6 @@ public class PaintApplet extends Applet{
 	int indexOfShapes = 0;    // Index of the array list. At first, number of shapes = 0
 	ArrayList<Shape> shapes = new ArrayList<Shape>();	// The array list which stores the shapes
 	
-	int indexOfRemovedShapes = 0;	// Index of the array list which holds the shapes removed from Undo operation
-	ArrayList<Shape> removedShapes = new ArrayList<Shape>();	// The array list which stores the removed shapes
-	
 	public void init(){
 		
 		/*  Options of Colors --> Red - Green - Blue - Pink - Cyan - Magenta - Orange  */
@@ -301,26 +298,23 @@ public class PaintApplet extends Applet{
 		addMouseMotionListener(new MouseAdapter(){
 			public void mouseDragged(MouseEvent e){
 				if(currentShape != null){
-					// Check the Pencil and Eraser cases
+					/* Check the Pencil and Eraser cases.
+						The idea behind them is to add a new line object while I'm dragging. This line will be very short, just one-unit length.
+						If it's a pencil, it will be colored with the selected color. If it's an eraser, it will be white. */
 					switch(currentlyDrawing){
 						case PENCIL:
-							
 							// Create new line objects while dragging
 							currentShape = new Line();
 							currentShape.setColor(shapeColor);
-							
 							// First coordinate
 							currentShape.setFirstPoint(x1, y1);
-							
 							// Get the end point
 							x2 = e.getX();
 							y2 = e.getY();
 							currentShape.setEndPoint(x2, y2);
-							
 							// Then add each line object
 							shapes.add(indexOfShapes, currentShape);
 							indexOfShapes++;
-							
 							// Update the next first point from we ended
 							x1 = x2;
 							y1 = y2;
@@ -330,35 +324,29 @@ public class PaintApplet extends Applet{
 							// Create new line objects while dragging
 							currentShape = new Line();
 							currentShape.setColor(Color.WHITE);
-							
 							// First coordinate
 							currentShape.setFirstPoint(x1, y1);
-							
 							// Get the end point
 							x2 = e.getX();
 							y2 = e.getY();
 							currentShape.setEndPoint(x2, y2);
-							
 							// Then add each line object
 							shapes.add(indexOfShapes, currentShape);
 							indexOfShapes++;
-							
 							// Update the next first point from we ended
 							x1 = x2;
 							y1 = y2;
 						break;
 						
-						default:
+						default:	// The code for normal shapes
 							// First coordinate
 							currentShape.setFirstPoint(x1, y1);
-							
 							// Get the end point then add the shape in the array list
 							x2 = e.getX();
 							y2 = e.getY();
 							currentShape.setEndPoint(x2, y2);
 						break;
 					}
-					
 					// Repaint and add to the array list
 					repaint();
 				}
