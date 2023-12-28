@@ -52,6 +52,99 @@ public class PaintApplet extends Applet{
 	
 	public void init(){
 		
+		/*  Options of Colors --> Red - Green - Blue - Pink  */
+		
+		// Our event source for the red button
+		Button redButton = new Button("Red");
+		
+		// Register the redButton listener to the redButton source
+		redButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 1;
+			}
+		});
+		add(redButton);
+		redButton.setBackground(Color.RED);
+		redButton.setForeground(Color.WHITE);
+		
+		// Our event source for the green button
+		Button greenButton = new Button("Green");
+		
+		// Register the greenButton listener to the greenButton source
+		greenButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 2;
+			}
+		});
+		add(greenButton);
+		greenButton.setBackground(Color.GREEN);
+		greenButton.setForeground(Color.WHITE);
+		
+		// Our event source for the blue button
+		Button blueButton = new Button("Blue");
+		
+		// Register the blueButton listener to the blueButton source
+		blueButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 3;
+			}
+		});
+		add(blueButton);
+		blueButton.setBackground(Color.BLUE);
+		blueButton.setForeground(Color.WHITE);
+		
+		// Our event source for the pink button
+		Button pinkButton = new Button("Pink");
+		
+		// Register the pinkButton listener to the pinkButton source
+		pinkButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 4;
+			}
+		});
+		add(pinkButton);
+		pinkButton.setBackground(Color.PINK);
+		pinkButton.setForeground(Color.WHITE);
+		
+		// Our event source for the cyan button
+		Button cyanButton = new Button("Cyan");
+		
+		// Register the cyanButton listener to the cyanButton source
+		cyanButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 5;
+			}
+		});
+		add(cyanButton);
+		cyanButton.setBackground(Color.CYAN);
+		cyanButton.setForeground(Color.WHITE);
+		
+		// Our event source for the magenta button
+		Button magentaButton = new Button("Magenta");
+		
+		// Register the magentaButton listener to the magentaButton source
+		magentaButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 6;
+			}
+		});
+		add(magentaButton);
+		magentaButton.setBackground(Color.MAGENTA);
+		magentaButton.setForeground(Color.WHITE);
+		
+		// Our event source for the orange button
+		Button orangeButton = new Button("Orange");
+		
+		// Register the orangeButton listener to the orangeButton source
+		orangeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentColor = 7;
+			}
+		});
+		add(orangeButton);
+		orangeButton.setBackground(Color.ORANGE);
+		orangeButton.setForeground(Color.WHITE);
+		
 		/*  Options of Shapes --> New Line - New Rectangle - New Oval  */
 		
 		// Our event source for the line button
@@ -109,85 +202,6 @@ public class PaintApplet extends Applet{
 		});
 		add(eraserButton);
 		
-		
-		/*  Options of Colors --> Red - Green - Blue - Pink  */
-		
-		// Our event source for the red button
-		Button redButton = new Button("Red");
-		
-		// Register the redButton listener to the redButton source
-		redButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				currentColor = 1;
-			}
-		});
-		add(redButton);
-		
-		// Our event source for the green button
-		Button greenButton = new Button("Green");
-		
-		// Register the greenButton listener to the greenButton source
-		greenButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				currentColor = 2;
-			}
-		});
-		add(greenButton);
-		
-		// Our event source for the blue button
-		Button blueButton = new Button("Blue");
-		
-		// Register the blueButton listener to the blueButton source
-		blueButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				currentColor = 3;
-			}
-		});
-		add(blueButton);
-		
-		// Our event source for the pink button
-		Button pinkButton = new Button("Pink");
-		
-		// Register the pinkButton listener to the pinkButton source
-		pinkButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				currentColor = 4;
-			}
-		});
-		add(pinkButton);
-		
-		// Our event source for the cyan button
-		Button cyanButton = new Button("Cyan");
-		
-		// Register the cyanButton listener to the cyanButton source
-		cyanButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				currentColor = 5;
-			}
-		});
-		add(cyanButton);
-		
-		// Our event source for the magenta button
-		Button magentaButton = new Button("Magenta");
-		
-		// Register the magentaButton listener to the magentaButton source
-		magentaButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				currentColor = 6;
-			}
-		});
-		add(magentaButton);
-		
-		// Our event source for the orange button
-		Button orangeButton = new Button("Orange");
-		
-		// Register the orangeButton listener to the orangeButton source
-		orangeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				currentColor = 7;
-			}
-		});
-		add(orangeButton);
 		
 		/*  Other options --> Undo - Clear All - Solid Shapes  */
 		
