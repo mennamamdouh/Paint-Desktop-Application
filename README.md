@@ -207,8 +207,7 @@ The second file contains the code of Applet. It has all the buttons needed and m
 ---
 
 ## Let's have some fun!
-<p align="center">
-<img src="images/Screenshot 2023-12-29 003935.png">
-</p>
+[<img src="images/Screenshot 2023-12-29 003935.png"
+/>](https://github.com/mennamamdouh/Paint-Desktop-Application/assets/70551007/f292c2fb-3392-44f5-8031-c8cf38893a4a)
 
 ---
