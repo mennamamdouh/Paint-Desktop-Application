@@ -2,7 +2,7 @@
 
 ## About Paint Desktop Application
 Paint is a simple raster graphics editor. It's built in Java Programming Language with OOP Principles.\
-The program lets you draw lines and shapes such as *Rectangle* and *Oval* with different colors picked from a color pallete. Also, you can draw with free-hand pencil. It has some extra features such as fill shapes, *Undo*, and *Clear All* options.
+The program lets you draw lines and shapes such as *Rectangle* and *Oval* with different colors picked from a color pallete. Also, you can draw with free-hand pencil and erase whatever you want with the *Eraser*. It has some extra features such as fill shapes, *Undo*, and *Clear All* options.
 
 <p align="center">
 <img src="images/Screenshot 2023-12-29 003158.png">
@@ -12,7 +12,7 @@ The program lets you draw lines and shapes such as *Rectangle* and *Oval* with d
 
 ## Implementing Paint Desktop Application in Java
 As mentioned, OOP principles such as *Encapsulation*, *Inheritance*, and *Polymorphism* are used to get this project done.\
-It's mainly divided into 2 java files. The first file contains the main classes for shapes. *Shape* class is the parent class which has the main features for any shape, such as its dimensions, color, and *draw* method. There're 3 children for the *Shape* class, *Line*, *Rectangle*, and *Oval* classes. Each child class has its own version of the *draw* method as overriden method.
+It's mainly divided into 2 java files. The first file contains the main classes for shapes. *Shape* class is the parent class which has the main features of any shape, such as its dimensions, color, and *draw* method. There're 3 children for the *Shape* class, *Line*, *Rectangle*, and *Oval* classes. Each child class has its own version of the *draw* method as overriden method.
 ```java
 abstract class Shape{
 	// Define the parameters of any shape
@@ -57,8 +57,8 @@ The second file contains the code of Applet. It has all the buttons needed and m
 	public static final int MAGENTA = 6;
 	public static final int ORANGE = 7;
   ```
-  - Inside the button event, 2 variables are assigned to two of those numbers, one of the shape and the other of the color.
-  - If we pressed the *Rectangle* and *Pink* buttons, those variables are assigned to 2 for *Rectangle* shape, and 4 for *Pink* color.
+  - Inside the button event, one of each numbering rules is assigned to a variable, one represents the shape and the other represents the picked color.
+  - If we pressed the *Rectangle* and *Pink* buttons, those variables are 2 for *Rectangle* shape, and 4 for *Pink* color.
     ```java
     // Our event source for the rectangle button
     Button rectangleButton = new Button("Rectangle");
@@ -156,9 +156,9 @@ The second file contains the code of Applet. It has all the buttons needed and m
 - After the mouse is released, the drawn shape is added to an array list which contains all the previous drawn shapes.
 - The idea behind *Pencil* and *Eraser* is to draw very small rectangles over and over while we're dragging the mouse.
   - Pencil draws with a picked color.
-  - Eraser draws with the Applet's background color.
-- Regarding the extra options such as *Solid Shapes*, *Clear All*, and *Undo*.
-  - Solid Shapes are drawn through a checkbox. If this box is checked, we use `fill` method instead of `draw`.
+  - Eraser draws with the Applet's background color (white in our case).
+- Regarding the extra options, *Solid Shapes*, *Clear All*, and *Undo*.
+  - Solid Shapes are drawn through a checkbox. If this box is checked, we use `fill` method instead of `draw`. For example, to draw a solid rectangle.
     ```java
     if(e.getStateChange() == ItemEvent.SELECTED){
         currentSolidState = true;
@@ -167,15 +167,14 @@ The second file contains the code of Applet. It has all the buttons needed and m
         currentSolidState = false;
     }
     ```
-    - For example: To draw a solid rectangle
-        ```java
-        case RECTANGLE:
-            if(currentSolidState){
-                graphicsObj.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-            }
-            graphicsObj.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
-        break;
-        ```
+	```java
+	case RECTANGLE:
+		if(currentSolidState){
+			graphicsObj.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+		}
+		graphicsObj.drawRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+	break;
+	```
   - Clear options is simply draws a rectangle with the same size and background color of the Applet.
     ```java
     currentShape = new Rectangle(true);
@@ -190,7 +189,26 @@ The second file contains the code of Applet. It has all the buttons needed and m
 
 ---
 
+## To run the project
+1. You need to download the `PaintApplet.java`, `Shape.java`, and `applet.html` files.
+   
+2. Using your terminal, compile the `PaintApplet.java` file by writing the following command.
+	```properties
+	javac PaintApplet.java
+	```
+
+3. Then run the appletviewer.
+   ```properties
+   appletviewer applet.html
+   ```
+
+4. Enjoy drawing!
+
+---
+
 ## Let's have some fun!
 <p align="center">
 <img src="images/Screenshot 2023-12-29 003935.png">
 </p>
+
+---
